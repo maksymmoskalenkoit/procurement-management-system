@@ -19,5 +19,7 @@ namespace WebApplicationForEnterprise.Models
 
         [ForeignKey("SupplierId")]
         public Supplier? Supplier { get; set; }
+        public ICollection<PurchaseOrderItem> PurchaseOrderItems { get; set; }
+           = new List<PurchaseOrderItem>();
     }
 }

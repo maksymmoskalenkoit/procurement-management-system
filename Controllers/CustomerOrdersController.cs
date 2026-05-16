@@ -10,23 +10,23 @@ using WebApplicationForEnterprise.Models;
 
 namespace WebApplicationForEnterprise.Controllers
 {
-    public class PurchaseOrdersController : Controller
+    public class CustomerOrdersController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public PurchaseOrdersController(ApplicationDbContext context)
+        public CustomerOrdersController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: PurchaseOrders
+        // GET: CustomerOrders
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.PurchaseOrders.Include(p => p.Supplier);
+            var applicationDbContext = _context.CustomerOrders.Include(c => c.Customer);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: PurchaseOrders/Details/5
+        // GET: CustomerOrders/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,44 +34,42 @@ namespace WebApplicationForEnterprise.Controllers
                 return NotFound();
             }
 
-            var purchaseOrder = await _context.PurchaseOrders
-                .Include(p => p.Supplier)
-                .Include(p => p.PurchaseOrderItems)
-                .ThenInclude(i => i.Product)
+            var customerOrder = await _context.CustomerOrders
+                .Include(c => c.Customer)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (purchaseOrder == null)
+            if (customerOrder == null)
             {
                 return NotFound();
             }
 
-            return View(purchaseOrder);
+            return View(customerOrder);
         }
 
-        // GET: PurchaseOrders/Create
+        // GET: CustomerOrders/Create
         public IActionResult Create()
         {
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name");
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name");
             return View();
         }
 
-        // POST: PurchaseOrders/Create
+        // POST: CustomerOrders/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,OrderDate,Status,SupplierId")] PurchaseOrder purchaseOrder)
+        public async Task<IActionResult> Create([Bind("Id,OrderDate,Status,CustomerId")] CustomerOrder customerOrder)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(purchaseOrder);
+                _context.Add(customerOrder);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", purchaseOrder.SupplierId);
-            return View(purchaseOrder);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", customerOrder.CustomerId);
+            return View(customerOrder);
         }
 
-        // GET: PurchaseOrders/Edit/5
+        // GET: CustomerOrders/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -79,23 +77,23 @@ namespace WebApplicationForEnterprise.Controllers
                 return NotFound();
             }
 
-            var purchaseOrder = await _context.PurchaseOrders.FindAsync(id);
-            if (purchaseOrder == null)
+            var customerOrder = await _context.CustomerOrders.FindAsync(id);
+            if (customerOrder == null)
             {
                 return NotFound();
             }
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", purchaseOrder.SupplierId);
-            return View(purchaseOrder);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", customerOrder.CustomerId);
+            return View(customerOrder);
         }
 
-        // POST: PurchaseOrders/Edit/5
+        // POST: CustomerOrders/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,OrderDate,Status,SupplierId")] PurchaseOrder purchaseOrder)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,OrderDate,Status,CustomerId")] CustomerOrder customerOrder)
         {
-            if (id != purchaseOrder.Id)
+            if (id != customerOrder.Id)
             {
                 return NotFound();
             }
@@ -104,12 +102,12 @@ namespace WebApplicationForEnterprise.Controllers
             {
                 try
                 {
-                    _context.Update(purchaseOrder);
+                    _context.Update(customerOrder);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PurchaseOrderExists(purchaseOrder.Id))
+                    if (!CustomerOrderExists(customerOrder.Id))
                     {
                         return NotFound();
                     }
@@ -120,11 +118,11 @@ namespace WebApplicationForEnterprise.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "Id", "Name", purchaseOrder.SupplierId);
-            return View(purchaseOrder);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Name", customerOrder.CustomerId);
+            return View(customerOrder);
         }
 
-        // GET: PurchaseOrders/Delete/5
+        // GET: CustomerOrders/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -132,35 +130,35 @@ namespace WebApplicationForEnterprise.Controllers
                 return NotFound();
             }
 
-            var purchaseOrder = await _context.PurchaseOrders
-                .Include(p => p.Supplier)
+            var customerOrder = await _context.CustomerOrders
+                .Include(c => c.Customer)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (purchaseOrder == null)
+            if (customerOrder == null)
             {
                 return NotFound();
             }
 
-            return View(purchaseOrder);
+            return View(customerOrder);
         }
 
-        // POST: PurchaseOrders/Delete/5
+        // POST: CustomerOrders/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var purchaseOrder = await _context.PurchaseOrders.FindAsync(id);
-            if (purchaseOrder != null)
+            var customerOrder = await _context.CustomerOrders.FindAsync(id);
+            if (customerOrder != null)
             {
-                _context.PurchaseOrders.Remove(purchaseOrder);
+                _context.CustomerOrders.Remove(customerOrder);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PurchaseOrderExists(int id)
+        private bool CustomerOrderExists(int id)
         {
-            return _context.PurchaseOrders.Any(e => e.Id == id);
+            return _context.CustomerOrders.Any(e => e.Id == id);
         }
     }
 }

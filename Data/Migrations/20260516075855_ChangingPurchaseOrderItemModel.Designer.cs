@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplicationForEnterprise.Data;
 
@@ -11,9 +12,11 @@ using WebApplicationForEnterprise.Data;
 namespace WebApplicationForEnterprise.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260516075855_ChangingPurchaseOrderItemModel")]
+    partial class ChangingPurchaseOrderItemModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -224,94 +227,6 @@ namespace WebApplicationForEnterprise.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("WebApplicationForEnterprise.Models.Customer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("CustomerType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Customers");
-                });
-
-            modelBuilder.Entity("WebApplicationForEnterprise.Models.CustomerOrder", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("CustomerOrders");
-                });
-
-            modelBuilder.Entity("WebApplicationForEnterprise.Models.CustomerOrderItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CustomerOrderId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerOrderId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("CustomerOrderItems");
-                });
-
             modelBuilder.Entity("WebApplicationForEnterprise.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -474,36 +389,6 @@ namespace WebApplicationForEnterprise.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WebApplicationForEnterprise.Models.CustomerOrder", b =>
-                {
-                    b.HasOne("WebApplicationForEnterprise.Models.Customer", "Customer")
-                        .WithMany("CustomerOrders")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("WebApplicationForEnterprise.Models.CustomerOrderItem", b =>
-                {
-                    b.HasOne("WebApplicationForEnterprise.Models.CustomerOrder", "CustomerOrder")
-                        .WithMany("CustomerOrderItems")
-                        .HasForeignKey("CustomerOrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebApplicationForEnterprise.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CustomerOrder");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("WebApplicationForEnterprise.Models.PurchaseOrder", b =>
                 {
                     b.HasOne("WebApplicationForEnterprise.Models.Supplier", "Supplier")
@@ -532,16 +417,6 @@ namespace WebApplicationForEnterprise.Data.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("PurchaseOrder");
-                });
-
-            modelBuilder.Entity("WebApplicationForEnterprise.Models.Customer", b =>
-                {
-                    b.Navigation("CustomerOrders");
-                });
-
-            modelBuilder.Entity("WebApplicationForEnterprise.Models.CustomerOrder", b =>
-                {
-                    b.Navigation("CustomerOrderItems");
                 });
 
             modelBuilder.Entity("WebApplicationForEnterprise.Models.PurchaseOrder", b =>

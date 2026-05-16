@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h1>Dashboard</h1>
+
+<div class="row mb-4">
+
+    <div class="col-md-3">
+        <div class="card p-3">
+            <h5>Товари</h5>
+            <h2>@ViewBag.ProductsCount</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card p-3">
+            <h5>Постачальники</h5>
+            <h2>@ViewBag.SuppliersCount</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card p-3">
+            <h5>Закупівлі</h5>
+            <h2>@ViewBag.PurchaseOrdersCount</h2>
+        </div>
+    </div>
+
+</div>
+
+<h3>Товари з низьким запасом</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Назва</th>
+            <th>Кількість</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in ViewBag.LowStockProducts)
+        {
+            <tr>
+                <td>@product.Name</td>
+                <td>@product.QuantityInStock</td>
+            </tr>
+        }
+    </tbody>
+</table>

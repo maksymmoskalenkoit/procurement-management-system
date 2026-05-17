@@ -49,14 +49,18 @@ namespace WebApplicationForEnterprise.Controllers
         // GET: PurchaseOrderItems/Create
         public IActionResult Create()
         {
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name");
-            ViewData["PurchaseOrderId"] = new SelectList(_context.PurchaseOrders, "Id", "Id");
+            ViewData["PurchaseOrderId"] =
+                new SelectList(
+                    _context.PurchaseOrders,
+                    "Id",
+                    "Id");
+
+            ViewBag.ProductIdData =
+                _context.Products.ToList();
+
             return View();
         }
 
-        // POST: PurchaseOrderItems/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,PurchaseOrderId,ProductId,Quantity,Price")] PurchaseOrderItem purchaseOrderItem)

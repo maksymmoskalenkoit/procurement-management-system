@@ -24,9 +24,6 @@ namespace WebApplicationForEnterprise.Models
         [Display(Name = "Адреса")]
         public string? Address { get; set; }
 
-        [Display(Name = "Тип клієнта")]
-        public string CustomerType { get; set; } = "Компанія";
-
         public ICollection<CustomerOrder> CustomerOrders { get; set; }
             = new List<CustomerOrder>();
     }

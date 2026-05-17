@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using WebApplicationForEnterprise.Enums;
 
 namespace WebApplicationForEnterprise.Models
 {
@@ -12,7 +13,7 @@ namespace WebApplicationForEnterprise.Models
         public DateTime OrderDate { get; set; } = DateTime.Now;
 
         [Display(Name = "Статус")]
-        public string Status { get; set; } = "Очікується";
+        public PurchaseOrderStatus Status { get; set; } = PurchaseOrderStatus.Очікується;
 
         [Display(Name = "Постачальник")]
         public int SupplierId { get; set; }

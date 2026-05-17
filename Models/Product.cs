@@ -12,8 +12,11 @@ namespace WebApplicationForEnterprise.Models
         [Display(Name = "Назва товару")]
         public string Name { get; set; } = string.Empty;
 
-        [Display(Name = "Ціна")]
-        public decimal Price { get; set; }
+        [Display(Name = "Закупівельна ціна")]
+        public decimal PurchasePrice { get; set; }
+
+        [Display(Name = "Ціна продажу")]
+        public decimal SellingPrice { get; set; }
 
         [Display(Name = "Кількість на складі")]
         public int QuantityInStock { get; set; }

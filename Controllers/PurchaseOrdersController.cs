@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApplicationForEnterprise.Data;
+using WebApplicationForEnterprise.Enums;
 using WebApplicationForEnterprise.Models;
 
 namespace WebApplicationForEnterprise.Controllers
@@ -161,6 +162,40 @@ namespace WebApplicationForEnterprise.Controllers
         private bool PurchaseOrderExists(int id)
         {
             return _context.PurchaseOrders.Any(e => e.Id == id);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ConfirmDelivery(int id)
+        {
+            var purchaseOrder = await _context.PurchaseOrders
+                .Include(p => p.PurchaseOrderItems)
+                .ThenInclude(i => i.Product)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (purchaseOrder == null)
+            {
+                return NotFound();
+            }
+
+            // Щоб не можна було двічі додати товар
+            if (purchaseOrder.Status == PurchaseOrderStatus.Доставлено)
+            {
+                return RedirectToAction(nameof(Details), new { id });
+            }
+
+            foreach (var item in purchaseOrder.PurchaseOrderItems)
+            {
+                if (item.Product != null)
+                {
+                    item.Product.QuantityInStock += item.Quantity;
+                }
+            }
+
+            purchaseOrder.Status = PurchaseOrderStatus.Доставлено;
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Details), new { id });
         }
     }
 }

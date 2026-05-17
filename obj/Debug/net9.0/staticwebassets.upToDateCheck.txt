@@ -121,5 +121,5 @@ C:\Users\1\source\repos\WebApplication3\WebApplication3\wwwroot\lib\bootstrap\di
 C:\Users\1\source\repos\WebApplication3\WebApplication3\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
 C:\Users\1\source\repos\WebApplication3\WebApplication3\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 C:\Users\1\source\repos\WebApplication3\WebApplication3\wwwroot\js\site.js
-C:\Users\1\source\repos\WebApplication3\WebApplication3\wwwroot\favicon.ico
 C:\Users\1\source\repos\WebApplication3\WebApplication3\wwwroot\css\site.css
+C:\Users\1\source\repos\WebApplication3\WebApplication3\wwwroot\favicon.ico

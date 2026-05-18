@@ -45,18 +45,19 @@ namespace WebApplicationForEnterprise.Controllers
 
             return View(customerOrderItem);
         }
-
         // GET: CustomerOrderItems/Create
-        public IActionResult Create()
+        public IActionResult Create(int? customerOrderId)
         {
-            ViewData["CustomerOrderId"] = new SelectList(_context.CustomerOrders, "Id", "Id");
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name");
+            ViewBag.CustomerOrderId =
+                customerOrderId;
+
+            ViewBag.ProductIdData =
+                _context.Products.ToList();
+
             return View();
         }
 
-        // POST: CustomerOrderItems/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,CustomerOrderId,ProductId,Quantity,Price")] CustomerOrderItem customerOrderItem)
@@ -64,11 +65,21 @@ namespace WebApplicationForEnterprise.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(customerOrderItem);
+
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction(
+                    "Details",
+                    "CustomerOrders",
+                    new { id = customerOrderItem.CustomerOrderId });
             }
-            ViewData["CustomerOrderId"] = new SelectList(_context.CustomerOrders, "Id", "Id", customerOrderItem.CustomerOrderId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name", customerOrderItem.ProductId);
+
+            ViewBag.CustomerOrderId =
+                customerOrderItem.CustomerOrderId;
+
+            ViewBag.ProductIdData =
+                _context.Products.ToList();
+
             return View(customerOrderItem);
         }
 
@@ -80,22 +91,28 @@ namespace WebApplicationForEnterprise.Controllers
                 return NotFound();
             }
 
-            var customerOrderItem = await _context.CustomerOrderItems.FindAsync(id);
+            var customerOrderItem =
+                await _context.CustomerOrderItems.FindAsync(id);
+
             if (customerOrderItem == null)
             {
                 return NotFound();
             }
-            ViewData["CustomerOrderId"] = new SelectList(_context.CustomerOrders, "Id", "Id", customerOrderItem.CustomerOrderId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name", customerOrderItem.ProductId);
+
+            ViewBag.ProductIdData =
+                _context.Products.ToList();
+
             return View(customerOrderItem);
         }
 
+
         // POST: CustomerOrderItems/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CustomerOrderId,ProductId,Quantity,Price")] CustomerOrderItem customerOrderItem)
+        public async Task<IActionResult> Edit(
+            int id,
+            [Bind("Id,CustomerOrderId,ProductId,Quantity,Price")]
+    CustomerOrderItem customerOrderItem)
         {
             if (id != customerOrderItem.Id)
             {
@@ -107,6 +124,7 @@ namespace WebApplicationForEnterprise.Controllers
                 try
                 {
                     _context.Update(customerOrderItem);
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -115,15 +133,19 @@ namespace WebApplicationForEnterprise.Controllers
                     {
                         return NotFound();
                     }
-                    else
-                    {
-                        throw;
-                    }
+
+                    throw;
                 }
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction(
+                    "Details",
+                    "CustomerOrders",
+                    new { id = customerOrderItem.CustomerOrderId });
             }
-            ViewData["CustomerOrderId"] = new SelectList(_context.CustomerOrders, "Id", "Id", customerOrderItem.CustomerOrderId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name", customerOrderItem.ProductId);
+
+            ViewBag.ProductIdData =
+                _context.Products.ToList();
+
             return View(customerOrderItem);
         }
 
@@ -161,7 +183,31 @@ namespace WebApplicationForEnterprise.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> QuickDelete(int id)
+        {
+            var customerOrderItem =
+                await _context.CustomerOrderItems.FindAsync(id);
 
+            if (customerOrderItem == null)
+            {
+                return NotFound();
+            }
+
+            var customerOrderId =
+                customerOrderItem.CustomerOrderId;
+
+            _context.CustomerOrderItems.Remove(
+                customerOrderItem);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(
+                "Details",
+                "CustomerOrders",
+                new { id = customerOrderId });
+        }
         private bool CustomerOrderItemExists(int id)
         {
             return _context.CustomerOrderItems.Any(e => e.Id == id);

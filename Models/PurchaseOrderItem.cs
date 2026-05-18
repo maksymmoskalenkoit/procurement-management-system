@@ -20,6 +20,8 @@ namespace WebApplicationForEnterprise.Models
         [ForeignKey("ProductId")]
         public Product? Product { get; set; }
 
+        [Range(1, 1000000,
+            ErrorMessage = "Кількість повинна бути мінімум 1")]
         [Display(Name = "Кількість")]
         public int Quantity { get; set; }
 

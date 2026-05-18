@@ -25,6 +25,72 @@ namespace WebApplicationForEnterprise.Controllers
             var applicationDbContext = _context.CustomerOrders.Include(c => c.Customer);
             return View(await applicationDbContext.ToListAsync());
         }
+        [HttpPost]
+        public async Task<IActionResult> ConfirmIssued(int id)
+        {
+            var customerOrder = await _context.CustomerOrders
+                .Include(c => c.CustomerOrderItems)
+                .ThenInclude(i => i.Product)
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (customerOrder == null)
+            {
+                return NotFound();
+            }
+
+            // щоб не можна було видати двічі
+            if (customerOrder.Status == "Видано")
+            {
+                return RedirectToAction(
+                    nameof(Details),
+                    new { id });
+            }
+
+            var insufficientProducts = new List<string>();
+
+            // спочатку лише перевірка
+            foreach (var item in customerOrder.CustomerOrderItems)
+            {
+                if (item.Product != null)
+                {
+                    if (item.Product.QuantityInStock < item.Quantity)
+                    {
+                        insufficientProducts.Add(
+                            $"{item.Product.Name} " +
+                            $"(на складі: {item.Product.QuantityInStock}, потрібно: {item.Quantity})");
+                    }
+                }
+            }
+
+            // якщо є проблеми — нічого не списуємо
+            if (insufficientProducts.Any())
+            {
+                TempData["Error"] =
+                    "Недостатньо товарів:<br><br>" +
+                    string.Join("<br>", insufficientProducts);
+
+                return RedirectToAction(
+                    nameof(Details),
+                    new { id });
+            }
+
+            // якщо все ок — списуємо зі складу
+            foreach (var item in customerOrder.CustomerOrderItems)
+            {
+                if (item.Product != null)
+                {
+                    item.Product.QuantityInStock -= item.Quantity;
+                }
+            }
+
+            customerOrder.Status = "Видано";
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(
+                nameof(Details),
+                new { id });
+        }
 
         // GET: CustomerOrders/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -36,6 +102,8 @@ namespace WebApplicationForEnterprise.Controllers
 
             var customerOrder = await _context.CustomerOrders
                 .Include(c => c.Customer)
+                .Include(c => c.CustomerOrderItems)
+                .ThenInclude(i => i.Product)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (customerOrder == null)
             {
@@ -57,10 +125,11 @@ namespace WebApplicationForEnterprise.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,OrderDate,Status,CustomerId")] CustomerOrder customerOrder)
+        public async Task<IActionResult> Create([Bind("Id,OrderDate,CustomerId")] CustomerOrder customerOrder)
         {
             if (ModelState.IsValid)
             {
+                customerOrder.Status = "Оформлення";
                 _context.Add(customerOrder);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

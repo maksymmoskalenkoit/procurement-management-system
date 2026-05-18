@@ -20,17 +20,34 @@
             </div>
             <div class="form-group">
                 <label asp-for="PurchasePrice" class="control-label"></label>
-                <input asp-for="PurchasePrice" class="form-control" />
-                <span asp-validation-for="PurchasePrice" class="text-danger"></span>
+
+                <input asp-for="PurchasePrice"
+                       class="form-control"
+                       type="number"
+                       step="1"
+                       min="1"
+                       value="@Model.PurchasePrice.ToString("0")" />
+
+                <span asp-validation-for="PurchasePrice"
+                      class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="SellingPrice" class="control-label"></label>
-                <input asp-for="SellingPrice" class="form-control" />
-                <span asp-validation-for="SellingPrice" class="text-danger"></span>
+
+                <input asp-for="SellingPrice"
+                       class="form-control"
+                       type="number"
+                       step="1"
+                       min="1"
+                       value="@Model.SellingPrice.ToString("0")" />
+
+                <span asp-validation-for="SellingPrice"
+                      class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="QuantityInStock" class="control-label"></label>
-                <input asp-for="QuantityInStock" class="form-control" />
+                <input asp-for="QuantityInStock" class="form-control" min="0" />
                 <span asp-validation-for="QuantityInStock" class="text-danger"></span>
             </div>
             <div class="form-group">

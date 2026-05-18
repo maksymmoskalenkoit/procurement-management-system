@@ -18,15 +18,9 @@
                  class="text-danger">
             </div>
 
-            <div class="form-group">
-                <label asp-for="PurchaseOrderId"
-                       class="control-label"></label>
-
-                <select asp-for="PurchaseOrderId"
-                        class="form-control"
-                        asp-items="ViewBag.PurchaseOrderId">
-                </select>
-            </div>
+            <input type="hidden"
+                   asp-for="PurchaseOrderId"
+                   value="@ViewBag.PurchaseOrderId" />
 
             <div class="form-group">
                 <label asp-for="ProductId"

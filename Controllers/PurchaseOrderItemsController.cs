@@ -47,13 +47,9 @@ namespace WebApplicationForEnterprise.Controllers
         }
 
         // GET: PurchaseOrderItems/Create
-        public IActionResult Create()
+        public IActionResult Create(int? purchaseOrderId)
         {
-            ViewData["PurchaseOrderId"] =
-                new SelectList(
-                    _context.PurchaseOrders,
-                    "Id",
-                    "Id");
+            ViewBag.PurchaseOrderId = purchaseOrderId;
 
             ViewBag.ProductIdData =
                 _context.Products.ToList();
@@ -69,10 +65,16 @@ namespace WebApplicationForEnterprise.Controllers
             {
                 _context.Add(purchaseOrderItem);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction(
+                    "Details",
+                    "PurchaseOrders",
+                    new { id = purchaseOrderItem.PurchaseOrderId });
             }
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name", purchaseOrderItem.ProductId);
-            ViewData["PurchaseOrderId"] = new SelectList(_context.PurchaseOrders, "Id", "Id", purchaseOrderItem.PurchaseOrderId);
+
+            ViewBag.ProductIdData =
+                _context.Products.ToList();
+
             return View(purchaseOrderItem);
         }
 
@@ -84,14 +86,43 @@ namespace WebApplicationForEnterprise.Controllers
                 return NotFound();
             }
 
-            var purchaseOrderItem = await _context.PurchaseOrderItems.FindAsync(id);
+            var purchaseOrderItem =
+                await _context.PurchaseOrderItems.FindAsync(id);
+
             if (purchaseOrderItem == null)
             {
                 return NotFound();
             }
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name", purchaseOrderItem.ProductId);
-            ViewData["PurchaseOrderId"] = new SelectList(_context.PurchaseOrders, "Id", "Id", purchaseOrderItem.PurchaseOrderId);
+
+            ViewBag.ProductIdData =
+                _context.Products.ToList();
+
             return View(purchaseOrderItem);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> QuickDelete(int id)
+        {
+            var purchaseOrderItem =
+                await _context.PurchaseOrderItems.FindAsync(id);
+
+            if (purchaseOrderItem == null)
+            {
+                return NotFound();
+            }
+
+            var purchaseOrderId =
+                purchaseOrderItem.PurchaseOrderId;
+
+            _context.PurchaseOrderItems.Remove(
+                purchaseOrderItem);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(
+                "Details",
+                "PurchaseOrders",
+                new { id = purchaseOrderId });
         }
 
         // POST: PurchaseOrderItems/Edit/5
@@ -111,6 +142,7 @@ namespace WebApplicationForEnterprise.Controllers
                 try
                 {
                     _context.Update(purchaseOrderItem);
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -124,10 +156,16 @@ namespace WebApplicationForEnterprise.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction(
+                    "Details",
+                    "PurchaseOrders",
+                    new { id = purchaseOrderItem.PurchaseOrderId });
             }
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name", purchaseOrderItem.ProductId);
-            ViewData["PurchaseOrderId"] = new SelectList(_context.PurchaseOrders, "Id", "Id", purchaseOrderItem.PurchaseOrderId);
+
+            ViewBag.ProductIdData =
+                _context.Products.ToList();
+
             return View(purchaseOrderItem);
         }
 

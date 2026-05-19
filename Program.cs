@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebApplicationForEnterprise.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace WebApplicationForEnterprise
 {
@@ -16,8 +18,11 @@ namespace WebApplicationForEnterprise
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            builder.Services.AddDefaultIdentity<IdentityUser>(
+                options => options.SignIn.RequireConfirmedAccount = true)
+                    .AddRoles<IdentityRole>()
+                    .AddEntityFrameworkStores<ApplicationDbContext>();
+
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
@@ -47,6 +52,59 @@ namespace WebApplicationForEnterprise
             app.MapRazorPages()
                .WithStaticAssets();
 
+            using (var scope = app.Services.CreateScope())
+            {
+                var roleManager = scope.ServiceProvider
+                    .GetRequiredService<RoleManager<IdentityRole>>();
+
+                string[] roles =
+                {
+                    "Admin",
+                    "Manager",
+                    "WarehouseWorker"
+                };
+
+                foreach (var role in roles)
+                {
+                    if (!roleManager.RoleExistsAsync(role).Result)
+                    {
+                        roleManager.CreateAsync(
+                            new IdentityRole(role)).Wait();
+                    }
+                }
+
+                var userManager = scope.ServiceProvider
+                    .GetRequiredService<UserManager<IdentityUser>>();
+
+                string adminEmail = "admin@gmail.com";
+                string adminPassword = "Admin123!";
+
+                var adminUser =
+                    userManager.FindByEmailAsync(adminEmail).Result;
+
+                if (adminUser == null)
+                {
+                    var user = new IdentityUser
+                    {
+                        UserName = adminEmail,
+                        Email = adminEmail,
+                        EmailConfirmed = true
+                    };
+
+                    var result =
+                        userManager.CreateAsync(
+                            user,
+                            adminPassword).Result;
+
+                    if (result.Succeeded)
+                    {
+                        userManager
+                            .AddToRoleAsync(
+                                user,
+                                "Admin").Wait();
+                    }
+                }
+            }
             app.Run();
         }
     }

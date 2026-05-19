@@ -112,18 +112,21 @@ table a {
 
     /* Edit */
     table a[href*="Edit"] {
-        background-color: #0d6efd;
+        background-color: #b58b5d;
+        color: white !important;
     }
 
     /* Details */
     table a[href*="Details"] {
-        background-color: #0dcaf0;
+        background-color: #b58b5d;
+        color: white !important;
     }
 
-    /* Delete */
+    /* Delete залишаємо */
     table a[href*="Delete"] {
         background-color: #dc3545;
     }
+
 
     /* Ефект наведення */
     table a:hover {
@@ -141,8 +144,6 @@ table a {
         background-color: #8c6843;
         color: white !important;
     }
-
-
 .card,
 .table,
 .container,
@@ -174,3 +175,83 @@ table a {
     .form-control::placeholder {
         color: #888;
     }
+.back-btn {
+    display: inline-block;
+    padding: 8px 14px;
+    background-color: #8c6843;
+    color: white !important;
+    text-decoration: none;
+    border-radius: 6px;
+    border: none;
+}
+
+    .back-btn:hover {
+        background-color: #6f5235;
+        color: white !important;
+    }
+
+.supplier-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.supplier-card {
+    width: 350px;
+    background-color: #f4eadb;
+    border: 1px solid #d8c5a7;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+    .supplier-card h4 {
+        color: #5a3f26;
+        margin-bottom: 15px;
+    }
+
+    .supplier-card hr {
+        border-color: #c9b08c;
+    }
+
+    .supplier-card p {
+        margin-bottom: 10px;
+    }
+
+.card-buttons {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+.customer-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.customer-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f4eadb;
+    border: 1px solid #d8c5a7;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.customer-info h4 {
+    color: #5a3f26;
+    margin-bottom: 10px;
+}
+
+.customer-info p {
+    margin-bottom: 5px;
+}
+
+.customer-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

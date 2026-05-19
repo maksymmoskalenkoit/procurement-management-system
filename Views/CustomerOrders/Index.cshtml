@@ -1,47 +1,158 @@
 ﻿@model IEnumerable<WebApplicationForEnterprise.Models.CustomerOrder>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Замовлення";
+
+    var createdOrders = Model
+        .Where(x => x.Status == "Створено");
+
+    var issuedOrders = Model
+        .Where(x => x.Status == "Видано");
 }
 
 <h1>ЗАМОВЛЕННЯ</h1>
 
 <p>
-    <a asp-action="Create" class="btn create-btn">Створити замовлення</a>
+    <a asp-action="Create"
+           class="btn create-btn">
+
+        Створити замовлення
+
+    </a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Customer)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.OrderDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Customer.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Змінити</a> 
-                <a asp-action="Details" asp-route-id="@item.Id">Кошик</a>
-                <a asp-action="Delete" asp-route-id="@item.Id">Видалити</a>
-            </td>
-        </tr>
+
+
+@if (createdOrders.Any())
+{
+    <h3>Активні замовлення</h3>
+
+    <table class="table">
+
+        <thead>
+            <tr>
+                <th>Дата замовлення</th>
+                <th>Статус</th>
+                <th>Клієнт</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in createdOrders)
+            {
+                <tr>
+
+                    <td>
+                        @item.OrderDate
+                    </td>
+
+                    <td>
+
+                        <span class="status-created">
+
+                            @item.Status
+
+                        </span>
+
+                    </td>
+
+                    <td>
+                        @item.Customer.Name
+                    </td>
+
+                    <td>
+
+                        <a asp-action="Edit"
+                               asp-route-id="@item.Id"
+                               class="btn edit-btn">
+
+                            Змінити
+
+                        </a>
+
+                        <a asp-action="Details"
+                               asp-route-id="@item.Id"
+                               class="btn details-btn">
+
+                            Кошик
+
+                        </a>
+
+                        <a asp-action="Delete"
+                               asp-route-id="@item.Id"
+                               class="btn delete-btn">
+
+                            Видалити
+
+                        </a>
+
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
 }
-    </tbody>
-</table>
+
+
+@if (issuedOrders.Any())
+{
+    <h3>Видані</h3>
+
+    <table class="table">
+
+        <thead>
+            <tr>
+                <th>Дата замовлення</th>
+                <th>Статус</th>
+                <th>Клієнт</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in issuedOrders)
+            {
+                <tr>
+
+                    <td>
+                        @item.OrderDate
+                    </td>
+
+                    <td>
+
+                        <span class="status-done">
+
+                            @item.Status
+
+                        </span>
+
+                    </td>
+
+                    <td>
+                        @item.Customer.Name
+                    </td>
+
+                    <td>
+
+                        <a asp-action="Details"
+                               asp-route-id="@item.Id"
+                               class="btn details-btn">
+
+                            Кошик
+
+                        </a>
+
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+}

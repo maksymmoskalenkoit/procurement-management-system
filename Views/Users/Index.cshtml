@@ -1,0 +1,39 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model IEnumerable<IdentityUser>
+
+@{
+    ViewData["Title"] = "Користувачі";
+}
+
+<h1>Користувачі</h1>
+
+<p>
+    <a asp-action="Create"
+           class="btn btn-primary">
+
+        Додати користувача
+    </a>
+</p>
+
+<table class="table">
+
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Логін</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Email</td>
+                <td>@item.UserName</td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>

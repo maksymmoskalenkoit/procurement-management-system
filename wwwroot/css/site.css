@@ -12,6 +12,11 @@ html {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    color: #5a3f26;
+    font-weight: 700;
+}
+
 html {
   position: relative;
   min-height: 100%;
@@ -46,38 +51,126 @@ table {
     border-spacing: 0;
 }
 
-    .table thead {
-        background-color: #343a40;
-        color: white;
+    /* Заголовок */
+    .table thead tr,
+    .table thead th {
+        background-color: #e9d6ba !important;
+        color: black !important;
     }
 
-        .table thead th {
-            font-weight: 500;
-            padding: 14px;
+    /* Звичайні рядки */
+    .table tbody tr,
+    .table tbody td {
+        background-color: #f4eadb !important;
+    }
+
+        /* Наведення */
+        .table tbody tr:hover td {
+            background-color: #efe2cf !important;
+            transition: 0.2s;
         }
+
+    .table thead th {
+        font-weight: 500;
+        padding: 14px;
+    }
 
     .table tbody td {
         padding: 12px;
         vertical-align: middle;
     }
 
-    .table tbody tr:hover {
-        background-color: #f5f5f5;
-        transition: 0.2s;
-    }
-
-    .table tbody tr:nth-child(even) {
-        background-color: #fafafa;
-    }
-
-    /* Кнопки всередині таблиць */
-
     .table .btn {
         margin-right: 5px;
     }
+    .table th,
+    .table td {
+        border-color: #d8c5a7 !important;
+        border-width: 1.5px;
+    }
 
-/* Красиві відступи */
-
-.table-container {
-    margin-top: 20px;
+body {
+    font-family: 'Roboto', sans-serif;
+    background-image: linear-gradient( rgba(255,255,255,0.65), rgba(255,255,255,0.65) ), url('/images/warehouse-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
+
+/* Посилання дій у таблицях */
+
+table a {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: white !important;
+    margin-right: 5px;
+    font-size: 14px;
+}
+
+    /* Edit */
+    table a[href*="Edit"] {
+        background-color: #0d6efd;
+    }
+
+    /* Details */
+    table a[href*="Details"] {
+        background-color: #0dcaf0;
+    }
+
+    /* Delete */
+    table a[href*="Delete"] {
+        background-color: #dc3545;
+    }
+
+    /* Ефект наведення */
+    table a:hover {
+        opacity: 0.85;
+        transform: translateY(-1px);
+        transition: 0.2s;
+    }
+    .create-btn {
+    background-color: #a67c52;
+    color: white !important;
+    border: none;
+    }
+
+    .create-btn:hover {
+        background-color: #8c6843;
+        color: white !important;
+    }
+
+
+.card,
+.table,
+.container,
+.form-control,
+.navbar {
+    background-color: #efe2cf !important;
+}
+
+/* Поля введення */
+
+.form-control,
+.form-select {
+    background-color: #fffaf3 !important;
+    border: 1px solid #d8c5a7;
+    color: black;
+}
+
+    /* При фокусі */
+
+    .form-control:focus,
+    .form-select:focus {
+        background-color: white !important;
+        border-color: #c9a36b;
+        box-shadow: 0 0 5px rgba(201,163,107,0.4);
+    }
+
+    /* Placeholder */
+
+    .form-control::placeholder {
+        color: #888;
+    }

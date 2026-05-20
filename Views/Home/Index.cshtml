@@ -14,7 +14,7 @@
 
     <div class="module-grid">
 
-        @if (User.IsInRole("Admin") || User.IsInRole("WarehouseWorker"))
+        @if (User.IsInRole("Admin") || User.IsInRole("WarehouseWorker") || User.IsInRole("Manager"))
         {
             <a class="module-card"
                    asp-controller="WarehouseModule"

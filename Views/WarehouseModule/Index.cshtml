@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Складський модуль";
+}
+
+<h1>Складський модуль</h1>
+
+<div class="module-grid">
+
+    <a class="module-card"
+           asp-controller="Products"
+           asp-action="Index">
+
+        <h3>📦 Товари</h3>
+
+        <p>Управління товарами</p>
+
+    </a>
+
+    <a class="module-card"
+           asp-controller="Suppliers"
+           asp-action="Index">
+
+        <h3>🏭 Постачальники</h3>
+
+        <p>Управління постачальниками</p>
+
+    </a>
+
+    <a class="module-card"
+           asp-controller="PurchaseOrders"
+           asp-action="Index">
+
+        <h3>🛒 Закупівлі</h3>
+
+        <p>Контроль закупівель</p>
+
+    </a>
+
+</div>

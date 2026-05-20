@@ -1,6 +1,10 @@
 wwwroot\css\site.css
 wwwroot\favicon.ico
+wwwroot\images\admin.png
+wwwroot\images\customers.jpg
+wwwroot\images\dashboard.jpg
 wwwroot\images\warehouse-bg.jpg
+wwwroot\images\warehouse.avif
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map

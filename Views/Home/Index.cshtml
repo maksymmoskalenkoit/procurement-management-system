@@ -1,4 +1,89 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Головна";
 }
 
+<div class="home-container">
+
+    <h1 class="main-title">
+        Web-Wholesale
+    </h1>
+
+    <p class="main-description">
+        Система управління оптовим підприємством
+    </p>
+
+    <div class="module-grid">
+
+        @if (User.IsInRole("Admin") || User.IsInRole("WarehouseWorker"))
+        {
+            <a class="module-card"
+                   asp-controller="WarehouseModule"
+                   asp-action="Index">
+
+                <img src="~/images/warehouse.avif" />
+
+                <h3>Складський модуль</h3>
+
+                <p>
+                    Товари, постачальники
+                    та закупівлі
+                </p>
+
+            </a>
+        }
+
+        @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+        {
+            <a class="module-card"
+                   asp-controller="ClientModule"
+                   asp-action="Index">
+
+                <img src="~/images/customers.jpg" />
+
+                <h3>Клієнтський модуль</h3>
+
+                <p>
+                    Клієнти та
+                    замовлення
+                </p>
+
+            </a>
+        }
+
+        @if (User.IsInRole("Admin"))
+        {
+            <a class="module-card"
+                   asp-controller="Users"
+                   asp-action="Index">
+
+                <img src="~/images/admin.png" />
+
+                <h3>Адміністрування</h3>
+
+                <p>
+                    Користувачі
+                    та ролі
+                </p>
+
+            </a>
+        }
+         @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+        {
+            <a class="module-card"
+            asp-controller="Dashboard"
+            asp-action="Index">
+
+                <img src="~/images/dashboard.jpg" />
+
+                <h3>Аналітика</h3>
+
+                <p>
+                    Dashboard та
+                    статистика
+                </p>
+
+            </a>
+        }
+    </div>
+
+</div>

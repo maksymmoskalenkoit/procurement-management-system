@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Клієнтський модуль";
+}
+
+<h1>Клієнтський модуль</h1>
+
+<div class="module-grid">
+
+    <a class="module-card"
+           asp-controller="Customers"
+           asp-action="Index">
+
+        <h3>👥 Клієнти</h3>
+
+        <p>Керування клієнтами</p>
+
+    </a>
+
+    <a class="module-card"
+           asp-controller="CustomerOrders"
+           asp-action="Index">
+
+        <h3>📋 Замовлення</h3>
+
+        <p>Робота із замовленнями</p>
+
+    </a>
+
+</div>

@@ -255,3 +255,56 @@ table a {
     flex-direction: column;
     gap: 10px;
 }
+
+.home-container {
+    text-align: center;
+}
+
+.main-title {
+    color: #5a3f26;
+    font-size: 50px;
+    margin-bottom: 10px;
+}
+
+.main-description {
+    font-size: 20px;
+    margin-bottom: 40px;
+}
+
+.module-grid {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.module-card {
+    background: #f4eadb;
+    border-radius: 20px;
+    padding: 20px;
+    text-decoration: none;
+    color: black;
+    border: 1px solid #d8c5a7;
+    transition: 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+    .module-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    .module-card img {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 20px;
+        border: 2px solid #8b5e34;
+        border-radius: 50%;
+
+        padding: 10px;
+        background: #fff8f0;
+    }
+
+    .module-card h3 {
+        color: #5a3f26;
+    }
